@@ -1,36 +1,50 @@
 import { Injectable } from "@nestjs/common";
-import { UsersRepository } from "./users.repository";
+import { CreateUserDto } from "./dto/create-user.Dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { User } from "./entities/user.entity";
+import { plainToClass } from "class-transformer";
+import { userDto } from "./dto/userDto";
 
-import { CreateUserDto } from "./create-user.Dto";
+
 
 
 @Injectable()
 export class UsersService {
-    constructor(private usersRepository:UsersRepository){
-
+   
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
+    
+    getUsers({page,limit}:{page:number,limit:number}){
+        return this.usersRepository.find();
+        
     }
-    getUsers({page , limit}:{page:number,limit:number}){
-        return this.usersRepository.getUsers({page , limit});
+    async getUsersById(id:string){
+        const user = await this.usersRepository.findOne({where:{id}})
+        return plainToClass(userDto,user);
+     }
+
+     async createUsers(user:CreateUserDto){
+        
+         const newUser = this.usersRepository.create(user)
+        await this.usersRepository.save(newUser)
+        return plainToClass(userDto,newUser);
+        
     }
 
-    getUsersById(id:number){
-       return this.usersRepository.getUsersById(id);
-    }
-
-    createUsers(user: CreateUserDto):number{
-        return this.usersRepository.createUsers(user);
-    }
-
-    findByEmail(email:string){
-       return this.usersRepository.findByEmail(email);
+    async findByEmail(email:string){
+      const user = await this.usersRepository.findOne({where:{email}});
+      return user
     }
 
 
-    updateUser(id:number){
+    /*updateUser(id:number){
        return this.usersRepository.updateUser(id)
     }
 
     deleteUser(id:number){
         return this.usersRepository.deleteUser(id)
-    }
+    }*/
+
 }
+
+    

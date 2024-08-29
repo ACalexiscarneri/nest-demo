@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import IUser from "src/interfeces/IUser";
-import { CreateUserDto } from "./create-user.Dto";
-import { userDto } from "./userDto";
+import { CreateUserDto } from "./dto/create-user.Dto";
+import { userDto } from "./dto/userDto"
 import { plainToClass } from "class-transformer";
 
 
@@ -39,11 +39,6 @@ export class UsersRepository {
        return plainToClass(userDto,user);
     }
 
-    createUsers(user:CreateUserDto):number{
-        const id = this.users.length + 1
-      this.users = [...this.users,{id , ...user} ]
-      return id
-    }
      
 
     findByEmail(email:string){

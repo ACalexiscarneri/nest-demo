@@ -1,17 +1,22 @@
 import { Exclude } from "class-transformer";
+import { IsUUID } from "class-validator";
 
 
 export class userDto {
-    id:number
+    @IsUUID()
+    id:string
+
     name: string;
     email: string;
     address: string;
-    phone: string;
+    phone: number;
     country: string;
     city: string;
   
     @Exclude()
     password: string;
+    @Exclude()
+    isAdmin: boolean;
 
 
 }
