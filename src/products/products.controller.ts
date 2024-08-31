@@ -42,12 +42,5 @@ export class ProductsController {
       return this.productsService.updateImageService(id,file)
     }
 
-
-    @Post("seeder")
-    async addProducts(){
-       await this.productsService.addProducts()
-       return "producto agregado con exito"
-    }
-
     
 }

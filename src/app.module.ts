@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -13,6 +13,9 @@ import { OrderDetailsModule } from './order-details/order-details.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from './config/envs';
+import { SeedsModule } from './seeds/seeds.module';
+import { ProductsSeed } from './seeds/products/products.seed';
+import { CategoriesSeed } from './seeds/categories/categories.seed';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -30,8 +33,10 @@ import { JWT_SECRET } from './config/envs';
       global:true,
       signOptions: {expiresIn:"1h"},
       secret: JWT_SECRET
-    })],
+    }),
+    SeedsModule],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
