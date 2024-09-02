@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Query, UseGuards } from "@nestjs/common";
 import { UsersService } from "./user.service";
 import { AuthGuard } from "src/guards/auth.guard";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
@@ -37,17 +37,14 @@ export class UsersController {
       return this.usersService.findByEmail(email)
     }
 
-    /*@Put(":id")
-    @HttpCode(200)
-    updateUsers(@Param("id") id:number){
-       return this.usersService.updateUser(Number(id))
-    }*/
 
-    /*@Delete(":id")
+    @Delete("delete/:id")
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @HttpCode(200)
-    daleteUser(@Param("id") id:number){
-      return this.usersService.deleteUser(Number(id))
-    }*/
+    daleteUser(@Param("id" , new ParseUUIDPipe()) id:string){
+      return this.usersService.deleteUser(id)
+    }
 
 
 }

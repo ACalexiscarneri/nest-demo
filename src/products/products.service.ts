@@ -32,15 +32,9 @@ export class ProductsService {
           
         }
         
-        async buyProduct(id:string):Promise<number>{
-          const product =  await this.productRepository.findOne({where:{id}})
-          
-          
-          if(product.stock === 0) {
-            throw new NotFoundException('out of stock product');
-          }
-          await this.productRepository.update(id,{stock:product.stock - 1})
-          return product.price;
+        async deleteProduct(id:string){
+           await this.productRepository.delete(id)
+           return "producto eliminado"
         }
 
         

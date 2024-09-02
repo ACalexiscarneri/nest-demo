@@ -39,11 +39,12 @@ export class UsersService {
 
     /*updateUser(id:number){
        return this.usersRepository.updateUser(id)
-    }
-
-    deleteUser(id:number){
-        return this.usersRepository.deleteUser(id)
     }*/
+
+    async deleteUser(id:string){
+        await this.usersRepository.delete(id)
+        return "usuario eliminado"
+    }
 
 }
 

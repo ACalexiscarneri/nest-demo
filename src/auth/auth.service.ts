@@ -1,15 +1,13 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { UsersService } from "../users/user.service";
 import { LoginUserDto } from "./dto/login.Dto";
-import * as bcrypt from "bcrypt"
 import { CreateUserDto } from "src/users/dto/create-user.Dto";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/users/entities/user.entity";
 import { Repository } from "typeorm";
-import { plainToClass, plainToInstance } from "class-transformer";
-import { userDto } from "src/users/dto/userDto";
 import { Role } from "./roles.enum";
+import * as bcryptjs from "bcryptjs"
 
 
 
@@ -31,7 +29,7 @@ export class AuthService {
       if(!user){
         return "Email o password incorrectos";
       }
-      const passwordValid = await bcrypt.compare(password , user.password)
+      const passwordValid = await bcryptjs.compare(password , user.password)
       if(!passwordValid){
         throw new NotFoundException("Email o password incorrectos")
       }
@@ -59,7 +57,7 @@ export class AuthService {
       if (!creds.password) {
         throw new BadRequestException("La contraseña es requerida");
       }
-      const hashedPassword = await bcrypt.hash(creds.password, 10);
+      const hashedPassword = await bcryptjs.hash(creds.password, 10);
      
       return this.userService.createUsers({...creds, password:hashedPassword});
       

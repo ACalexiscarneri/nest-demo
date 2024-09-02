@@ -1,8 +1,9 @@
-import { Controller, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Controller, Delete, FileTypeValidator, Get, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AuthGuard } from "src/guards/auth.guard";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { RolesGuard } from "src/guards/roles.guard";
 
 @ApiTags("products")
 @Controller("products")
@@ -20,6 +21,20 @@ export class ProductsController {
     return this.productsService.getProductById(id)
 
     }
+
+    @Delete("delete/:id")
+    @UseGuards(AuthGuard, RolesGuard)
+    deleteProduct(@Param("id" , new ParseUUIDPipe()) id:string){
+       return this.productsService.deleteProduct(id)
+    }
+
+
+ 
+
+
+
+
+
 
     @Post("/uploadImage/:id")
     @ApiBearerAuth()
